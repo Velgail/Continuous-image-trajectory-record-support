@@ -1,4 +1,3 @@
-
 /*
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,7 +25,17 @@ DEALINGS IN THE SOFTWARE.
 */
 #define Burst_Delay 500//ms
 #packopt name "citrs"
+repeat
 dialog "jpg|png",16,"JPG|PNG"
+if(stat){
+	break
+}else{
+	dialog "ファイルが選択されていません。選択しますか？",2,"通知"
+	if(stat==7){
+		end
+	}
+}
+loop
 chdir getpath(refstr,32)
 dirlist files,"*"+getpath(refstr,2)
 notesel files
@@ -62,6 +71,8 @@ for i,0,notemax
 		if(mouser){
 			if(omouser!=mouser){
 				notesel csv
+				noteget position,notemax-1
+				split position,",",buf,x,y
 				notedel notemax-1
 				noteunsel
 				if(i>0){
@@ -71,11 +82,13 @@ for i,0,notemax
 				title strf("%s (%d of %d)",file,i+1,notemax)
 				pos 0,0
 				picload file,1
+				color 255,0,0
+				circle int(x)-3,int(y)-3,int(x)+3,int(y)+3
 			}
 		}
 		await 1
 	loop
-	csv+=strf("%d,%d\n",mousex,mousey)
+	csv+=strf("%d,%d,%d\n",i,mousex,mousey)
 next
 notesel csv
 repeat
@@ -85,4 +98,4 @@ if (stat){
 }
 await
 loop
-notesave refstr
+notesave getpath(refstr,1)+".csv"
