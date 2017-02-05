@@ -1,3 +1,4 @@
+
 /*
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -23,8 +24,8 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
-	#define Burst_Delay 500//ms
-	
+#define Burst_Delay 500//ms
+#packopt name "citrs"
 dialog "jpg|png",16,"JPG|PNG"
 chdir getpath(refstr,32)
 dirlist files,"*"+getpath(refstr,2)
@@ -63,7 +64,9 @@ for i,0,notemax
 				notesel csv
 				notedel notemax-1
 				noteunsel
-				i--
+				if(i>0){
+					i--
+				}
 				noteget file,i
 				title strf("%s (%d of %d)",file,i+1,notemax)
 				pos 0,0
@@ -72,7 +75,7 @@ for i,0,notemax
 		}
 		await 1
 	loop
-	csv+=strf("%d,%d,%d\n",i,mousex,mousey)
+	csv+=strf("%d,%d\n",mousex,mousey)
 next
 notesel csv
 repeat
